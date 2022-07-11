@@ -75,16 +75,18 @@ class ZcyApplicationTests {
         log.info("写入用户: " + Duration.between(localDateTime, LocalDateTime.now()));
         tks = tkRepository.query();
         users = userRepository.query();
-        List<ProblemSolving> problemSolvings = new ArrayList<>();
+        List<ProblemSolving> problemSolvingList = new ArrayList<>();
         Random random = new Random();
+        final int tkSize = tks.size();
+        final int userSize = users.size();
         for (int i = 0; i < 1000000; i++) {
             ProblemSolving problemSolving = new ProblemSolving();
-            problemSolving.setTKId(tks.get(random.nextInt(tks.size())).getId());
-            problemSolving.setUserId(users.get(random.nextInt(users.size())).getId());
-            problemSolvings.add(problemSolving);
+            problemSolving.setTKId(tks.get(random.nextInt(tkSize)).getId());
+            problemSolving.setUserId(users.get(random.nextInt(userSize)).getId());
+            problemSolvingList.add(problemSolving);
         }
         localDateTime = LocalDateTime.now();
-        problemSolvingRepository.batchInsert(problemSolvings);
+        problemSolvingRepository.batchInsert(problemSolvingList);
         log.info("写入解题记录: " + Duration.between(localDateTime, LocalDateTime.now()));
         log.info(problemSolvingRepository.query().toString());
     }
